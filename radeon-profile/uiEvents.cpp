@@ -139,7 +139,7 @@ void radeon_profile::iconActivated(QSystemTrayIcon::ActivationReason reason) {
 }
 
 void radeon_profile::closeEvent(QCloseEvent *e) {
-    if (ui->cb_closeTray->isChecked() && !closeFromTrayMenu) {
+    if (ui->cb_closeTray->isChecked() && !closeFromTrayMenu && !e->spontaneous()) {
         this->hide();
         e->ignore();
         return;
@@ -164,6 +164,7 @@ void radeon_profile::closeEvent(QCloseEvent *e) {
         saveConfig();
     }
 
+    e->accept();
     QCoreApplication::processEvents(QEventLoop::AllEvents, 50); // Wait for the daemon to disable pwm
     QApplication::quit();
 }
